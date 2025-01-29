@@ -6,38 +6,39 @@
     <title>بوابة استعلام الشهادات لنتائج الفصل الدراسي الأول - مدرسة محمد بن سليمان الغافري</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(to right, #4A90E2, #9013FE);
             text-align: center;
             color: white;
             margin: 0;
             padding: 0;
         }
         .header {
-            background-color: rgba(44, 62, 80, 0.9);
+            background: rgba(44, 62, 80, 0.95);
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
         .header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.7rem;
+            font-weight: bold;
         }
         .header h2 {
             margin: 10px 0;
             font-size: 1.6rem;
-            color: #f1c40f;
+            color: #FFD700;
         }
         .logo {
-            width: 110px;
+            width: 120px;
             height: auto;
             margin: 10px;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
         }
         .marquee {
-            background: #f1c40f;
+            background: #FFD700;
             color: #2c3e50;
-            padding: 12px 0;
+            padding: 14px 0;
             font-size: 18px;
             font-weight: bold;
             overflow: hidden;
@@ -45,100 +46,77 @@
         }
         .marquee span {
             display: inline-block;
-            animation: marquee 12s linear infinite;
+            animation: marquee 10s linear infinite;
         }
         @keyframes marquee {
             from { transform: translateX(100%); }
             to { transform: translateX(-100%); }
         }
         .container {
-            max-width: 90%;
+            max-width: 85%;
             margin: 40px auto;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             color: #2c3e50;
         }
         input {
-            width: 90%;
+            width: 92%;
             padding: 14px;
             margin: 12px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border: 2px solid #bbb;
+            border-radius: 10px;
+            font-size: 1.2rem;
         }
         button {
             background: #27ae60;
             color: white;
-            padding: 14px 22px;
+            padding: 15px 24px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: 0.3s;
         }
         button:hover {
-            background: #219150;
+            background: #1a9248;
         }
         .footer {
             margin-top: 50px;
-            padding: 15px;
+            padding: 20px;
             background-color: #2c3e50;
             color: #fff;
             font-size: 1rem;
+            font-weight: bold;
         }
     </style>
     <script>
-        let studentData = [];
-        const messages = [
-            "🎉 تهانينا للطلبة الناجحين، مزيدًا من التقدم والنجاح! 🎓",
-            "🌟 مبارك لكم هذا الإنجاز العظيم، المستقبل بانتظاركم! 🎉",
-            "👏 نفخر بكم ونعتز بجهودكم، استمروا في تحقيق النجاح! 💪",
-            "🎊 أحسنتم صنعًا، ها هي ثمرة جهدكم واجتهادكم! 🎖️"
-        ];
-
-        async function loadStudentData() {
-            try {
-                const response = await fetch('students.json');
-                studentData = await response.json();
-            } catch (error) {
-                console.error('حدث خطأ في تحميل البيانات:', error);
-            }
-        }
-
-        function changeMarqueeMessage() {
-            const marquee = document.querySelector('.marquee span');
-            let index = 0;
-            setInterval(() => {
-                marquee.textContent = messages[index];
-                index = (index + 1) % messages.length;
-            }, 5000);
-        }
-
-        function searchCertificate() {
+        async function searchCertificate() {
             const civilId = document.getElementById('civilId').value.trim();
             const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '';
-            
-            const student = studentData.find(s => s.civilId === civilId);
-            
-            if (student) {
-                resultDiv.innerHTML = `
-                    <h3 style="color: #27ae60;">نتيجة البحث</h3>
-                    <p><strong>الاسم:</strong> ${student.name}</p>
-                    <p><strong>الصف:</strong> ${student.grade}</p>
-                    <p><strong>الشهادة:</strong> <a href="${student.certificateLink}" target="_blank" style="color: #2980b9; text-decoration: none;">عرض الشهادة</a></p>
-                `;
-            } else {
-                resultDiv.innerHTML = '<p style="color:red;">لم يتم العثور على شهادة لهذا الرقم المدني.</p>';
+            resultDiv.innerHTML = '⏳ جاري البحث...';
+
+            const apiUrl = "https://script.google.com/macros/s/AKfycbwc18qCClKTqkAu-K4Fd_ZBkrV7LPySTtXgvkQ_upcxZZMqI2Osvlhu2V9MhYZHQ3CP/exec?civilId=" + civilId;
+
+            try {
+                const response = await fetch(apiUrl);
+                const student = await response.json();
+
+                if (student && student.civilId) {
+                    resultDiv.innerHTML = `
+                        <h3 style="color: #27ae60;">✅ نتيجة البحث</h3>
+                        <p><strong>👤 الاسم:</strong> ${student.name}</p>
+                        <p><strong>📚 الصف:</strong> ${student.grade}</p>
+                        <p><strong>📜 الشهادة:</strong> <a href="${student.certificateLink}" target="_blank" style="color: #2980b9; text-decoration: none;">🎓 عرض الشهادة</a></p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = '<p style="color:red;">❌ لم يتم العثور على شهادة لهذا الرقم المدني.</p>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color:red;">⚠️ حدث خطأ أثناء جلب البيانات.</p>';
             }
         }
-
-        window.onload = function() {
-            loadStudentData();
-            changeMarqueeMessage();
-        };
     </script>
 </head>
 <body>
@@ -147,11 +125,11 @@
         <h2>بوابة استعلام الشهادات لنتائج الفصل الدراسي الأول للعام الدراسي 2024 / 2025 م</h2>
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     </div>
-    <div class="marquee"><span>🎉 تهانينا للطلبة الناجحين، مزيدًا من التقدم والنجاح! 🎓</span></div>
+    <div class="marquee"><span>🎉 تهانينا للطلبة المتفوقين، أنتم فخر المستقبل! 🎓</span></div>
     <div class="container">
-        <label for="civilId">أدخل الرقم المدني:</label>
+        <label for="civilId">🔍 أدخل الرقم المدني للطالب:</label>
         <input type="text" id="civilId" placeholder="مثال: 12345678">
-        <button onclick="searchCertificate()">عرض الشهادة</button>
+        <button onclick="searchCertificate()">🎓 عرض الشهادة</button>
         <div id="result"></div>
     </div>
     <div class="footer">
