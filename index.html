@@ -97,7 +97,7 @@
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = '⏳ جاري البحث...';
 
-            const apiUrl = "https://script.google.com/macros/s/AKfycbwc18qCClKTqkAu-K4Fd_ZBkrV7LPySTtXgvkQ_upcxZZMqI2Osvlhu2V9MhYZHQ3CP/exec?civilId=" + civilId;
+            const apiUrl = "https://script.google.com/macros/s/AKfycbwMDCRUW6Q4ZAMuBJexwTfgZcg9aPgdUd0jzcMwbMdqFAEKTMDQ5pjz98CI3iQLi-IX/exec?civilId=" + civilId;
 
             try {
                 const response = await fetch(apiUrl);
@@ -127,7 +127,7 @@
     </div>
     <div class="marquee"><span>🎉 تهانينا للطلبة المتفوقين، أنتم فخر المستقبل! 🎓</span></div>
     <div class="container">
-        <label for="civilId">🔍 أدخل الرقم المدني للطالب:</label>
+        <label for="civilId">🔍 أدخل الرقم المدني:</label>
         <input type="text" id="civilId" placeholder="مثال: 12345678">
         <button onclick="searchCertificate()">🎓 عرض الشهادة</button>
         <div id="result"></div>
