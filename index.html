@@ -3,25 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة استعلام الشهادات لنتائج الفصل الدراسي الأول - مدرسة محمد بن سليمان الغافري</title>
+    <title>بوابة استعلام الشهادات - مدرسة محمد بن سليمان الغافري</title>
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(to right, #4A90E2, #9013FE);
+            background: linear-gradient(135deg, #3a6186, #89253e);
             text-align: center;
             color: white;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .header {
             background: rgba(44, 62, 80, 0.95);
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            animation: slideDown 1s ease-in-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .header h1 {
             margin: 0;
             font-size: 2.7rem;
             font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
         }
         .header h2 {
             margin: 10px 0;
@@ -46,11 +64,11 @@
         }
         .marquee span {
             display: inline-block;
-            animation: marquee 10s linear infinite;
+            animation: marquee-reverse 20s linear infinite;
         }
-        @keyframes marquee {
-            from { transform: translateX(100%); }
-            to { transform: translateX(-100%); }
+        @keyframes marquee-reverse {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
         }
         .container {
             max-width: 85%;
@@ -68,9 +86,17 @@
             border: 2px solid #bbb;
             border-radius: 10px;
             font-size: 1.2rem;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+            outline: none;
         }
         button {
-            background: #27ae60;
+            animation: pulse 1.5s infinite;
+        
+            background: linear-gradient(135deg, #27ae60, #1a9248);
             color: white;
             padding: 15px 24px;
             border: none;
@@ -80,7 +106,8 @@
             transition: 0.3s;
         }
         button:hover {
-            background: #1a9248;
+            background: linear-gradient(135deg, #1a9248, #27ae60);
+            box-shadow: 0 0 15px rgba(39, 174, 96, 0.7);
         }
         .footer {
             margin-top: 50px;
@@ -125,10 +152,9 @@
         <h2>بوابة استعلام الشهادات لنتائج الفصل الدراسي الأول للعام الدراسي 2024 / 2025 م</h2>
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     </div>
-    <div class="marquee"><span>🎉 تهنئة مدير المدرسة 
-سررت بالنتائج الرائعة لأبنائي  الطلبة ..وفقكم ربي للخير والصلاح  ،   ! 🎓</span></div>
+    <div class="marquee"><span>🎉 تهانينا للطلبة المتفوقين، أنتم فخر المستقبل! 🎓 | 🌟 تهنئة مدير المدرسة: سررت بالنتائج الرائعة لأبنائي الطلبة .. وفقكم ربي للخير والصلاح 🌟</span></div>
     <div class="container">
-        <label for="civilId">🔍 أدخل الرقم المدني:</label>
+        <label for="civilId" style="font-size: 1.3rem; font-weight: bold; color: #2c3e50; display: block; margin-bottom: 10px;">🔍 أدخل الرقم المدني للطالب:</label>
         <input type="text" id="civilId" placeholder="مثال: 12345678">
         <button onclick="searchCertificate()">🎓 عرض الشهادة</button>
         <div id="result"></div>
