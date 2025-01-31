@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة استعلام الشهادات - مدرسة محمد بن سليمان الغافري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
             background: linear-gradient(135deg, #3a6186, #89253e);
+            animation: gradientAnimation 10s ease infinite;
             text-align: center;
             color: white;
             margin: 0;
@@ -15,12 +17,11 @@
             overflow-x: hidden;
             animation: fadeIn 1.5s ease-in-out;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -30,7 +31,7 @@
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             animation: slideDown 1s ease-in-out;
-            position: relative; /* لجعل الإشعار يظهر أسفل العنوان */
+            position: relative;
         }
         @keyframes slideDown {
             from { transform: translateY(-50px); opacity: 0; }
@@ -41,6 +42,12 @@
             font-size: 2.7rem;
             font-weight: bold;
             text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+            animation: textGlow 2s ease-in-out infinite;
+        }
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+            100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
         }
         .header h2 {
             margin: 10px 0;
@@ -54,9 +61,14 @@
             border-radius: 50%;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
             transition: transform 0.3s ease-in-out;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         .logo:hover {
-            transform: rotate(360deg); /* تدوير الشعار عند التحويم */
+            transform: rotate(360deg);
         }
         .marquee {
             background: #FFD700;
@@ -84,6 +96,10 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             color: #2c3e50;
             animation: fadeInContainer 1s ease-in-out;
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.02);
         }
         @keyframes fadeInContainer {
             from { opacity: 0; transform: translateY(20px); }
@@ -96,7 +112,11 @@
             border: 2px solid #bbb;
             border-radius: 10px;
             font-size: 1.2rem;
-            transition: 0.3s;
+            transition: all 0.3s ease-in-out;
+        }
+        input:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(39, 174, 96, 0.5);
         }
         input:focus {
             border-color: #27ae60;
@@ -104,7 +124,7 @@
             outline: none;
         }
         button {
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.5s infinite, shadowAnimation 2s ease-in-out infinite;
             background: linear-gradient(135deg, #27ae60, #1a9248);
             color: white;
             padding: 15px 24px;
@@ -113,6 +133,16 @@
             font-size: 1.2rem;
             cursor: pointer;
             transition: 0.3s;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shadowAnimation {
+            0% { box-shadow: 0 0 15px rgba(39, 174, 96, 0.7); }
+            50% { box-shadow: 0 0 25px rgba(39, 174, 96, 0.9); }
+            100% { box-shadow: 0 0 15px rgba(39, 174, 96, 0.7); }
         }
         button:hover {
             background: linear-gradient(135deg, #1a9248, #27ae60);
@@ -140,7 +170,7 @@
         }
         .update-notification {
             position: absolute;
-            bottom: -50px; /* يظهر أسفل العنوان مباشرة */
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
             background: #27ae60;
@@ -150,7 +180,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             font-size: 1.1rem;
             font-weight: bold;
-            animation: slideUp 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards;
+            animation: slideUp 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards, bounce 0.5s ease-in-out;
             z-index: 1000;
         }
         @keyframes slideUp {
@@ -160,6 +190,10 @@
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
         }
         .stars {
             position: absolute;
@@ -178,14 +212,34 @@
             height: 2px;
             border-radius: 50%;
             animation: animateStars linear infinite;
+            animation-duration: calc(100s / var(--speed));
+            animation-delay: calc(-100s / var(--speed));
         }
         @keyframes animateStars {
-            0% { transform: translateY(0); }
+            0% { transform: translateY(-100vh); }
             100% { transform: translateY(100vh); }
+        }
+        .tagline {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #FFD700;
+            animation: fadeInOut 3s infinite;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .tagline-bottom {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #FFD700;
+            animation: fadeInOut 3s infinite;
         }
     </style>
     <script>
-        // عرض إشعار التحديث عند تحميل الصفحة
         window.onload = function() {
             showUpdateNotification();
             createStars();
@@ -197,7 +251,6 @@
             notification.innerHTML = '🎉 تم تحديث الموقع! تفقدوا الشهادات الآن. 🎓';
             document.querySelector('.header').appendChild(notification);
 
-            // إزالة الإشعار بعد 5 ثوانٍ
             setTimeout(() => {
                 notification.remove();
             }, 5000);
@@ -211,8 +264,12 @@
             for (let i = 0; i < 100; i++) {
                 const star = document.createElement('span');
                 star.style.left = `${Math.random() * 100}%`;
-                star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                star.style.animationDuration = `${Math.random() * 5 + 2}s`;
                 star.style.animationDelay = `${Math.random() * 2}s`;
+                star.style.setProperty('--speed', Math.random() * 2 + 1);
                 starsContainer.appendChild(star);
             }
         }
@@ -242,9 +299,11 @@
                     playSuccessSound();
                 } else {
                     resultDiv.innerHTML = '<p style="color:red;">❌ لم يتم العثور على شهادة لهذا الرقم المدني.</p>';
+                    playErrorSound();
                 }
             } catch (error) {
                 resultDiv.innerHTML = '<p style="color:red;">⚠️ حدث خطأ أثناء جلب البيانات.</p>';
+                playErrorSound();
             }
         }
 
@@ -252,19 +311,31 @@
             const audio = new Audio('https://www.soundjay.com/human/applause-01.mp3');
             audio.play();
         }
+
+        function playErrorSound() {
+            const audio = new Audio('https://www.soundjay.com/button/button-10.mp3');
+            audio.play();
+        }
+
+        function playClickSound() {
+            const audio = new Audio('https://www.soundjay.com/button/button-3.mp3');
+            audio.play();
+        }
     </script>
 </head>
 <body>
     <div class="header">
         <h1>مدرسة محمد بن سليمان الغافري</h1>
+        <div class="tagline">منارة العابرين .. ونور السالكين</div>
         <h2>بوابة استعلام الشهادات لنتائج الفصل الدراسي الأول للعام الدراسي 2024 / 2025 م</h2>
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
+        <div class="tagline-bottom">منارة العابرين .. ونور السالكين</div>
     </div>
     <div class="marquee"><span>🎉 تهانينا للطلبة المتفوقين، أنتم فخر المدرسة! 🎓 | 🌟 تهنئة مدير المدرسة: سررت بالنتائج الرائعة لأبنائي الطلبة .. وفقكم ربي للخير والصلاح 🌟</span></div>
     <div class="container">
         <label for="civilId" style="font-size: 1.3rem; font-weight: bold; color: #2c3e50; display: block; margin-bottom: 10px;">🔍 أدخل الرقم المدني للطالب:</label>
         <input type="text" id="civilId" placeholder="مثال: 12345678">
-        <button onclick="searchCertificate()">🎓 عرض الشهادة</button>
+        <button onclick="searchCertificate(); playClickSound();">🎓 عرض الشهادة</button>
         <div id="result"></div>
     </div>
     <div class="footer">
