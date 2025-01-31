@@ -30,6 +30,7 @@
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             animation: slideDown 1s ease-in-out;
+            position: relative; /* لجعل الإشعار يظهر أسفل العنوان */
         }
         @keyframes slideDown {
             from { transform: translateY(-50px); opacity: 0; }
@@ -52,6 +53,10 @@
             margin: 10px;
             border-radius: 50%;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease-in-out;
+        }
+        .logo:hover {
+            transform: rotate(360deg); /* تدوير الشعار عند التحويم */
         }
         .marquee {
             background: #FFD700;
@@ -78,6 +83,11 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             color: #2c3e50;
+            animation: fadeInContainer 1s ease-in-out;
+        }
+        @keyframes fadeInContainer {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         input {
             width: 92%;
@@ -95,7 +105,6 @@
         }
         button {
             animation: pulse 1.5s infinite;
-        
             background: linear-gradient(135deg, #27ae60, #1a9248);
             color: white;
             padding: 15px 24px;
@@ -116,15 +125,104 @@
             color: #fff;
             font-size: 1rem;
             font-weight: bold;
+            animation: fadeInFooter 1s ease-in-out;
+        }
+        @keyframes fadeInFooter {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-animation {
+            animation: fadeInResult 1s ease-in-out;
+        }
+        @keyframes fadeInResult {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .update-notification {
+            position: absolute;
+            bottom: -50px; /* يظهر أسفل العنوان مباشرة */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-size: 1.1rem;
+            font-weight: bold;
+            animation: slideUp 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards;
+            z-index: 1000;
+        }
+        @keyframes slideUp {
+            from { bottom: -50px; opacity: 0; }
+            to { bottom: -10px; opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .stars span {
+            position: absolute;
+            top: -50px;
+            background: rgba(255, 255, 255, 0.8);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: animateStars linear infinite;
+        }
+        @keyframes animateStars {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
         }
     </style>
     <script>
+        // عرض إشعار التحديث عند تحميل الصفحة
+        window.onload = function() {
+            showUpdateNotification();
+            createStars();
+        };
+
+        function showUpdateNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'update-notification';
+            notification.innerHTML = '🎉 تم تحديث الموقع! تفقدوا الشهادات الآن. 🎓';
+            document.querySelector('.header').appendChild(notification);
+
+            // إزالة الإشعار بعد 5 ثوانٍ
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        function createStars() {
+            const starsContainer = document.createElement('div');
+            starsContainer.className = 'stars';
+            document.body.appendChild(starsContainer);
+
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('span');
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
         async function searchCertificate() {
             const civilId = document.getElementById('civilId').value.trim();
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = '⏳ جاري البحث...';
 
-            const apiUrl = "https://script.google.com/macros/s/AKfycbwMDCRUW6Q4ZAMuBJexwTfgZcg9aPgdUd0jzcMwbMdqFAEKTMDQ5pjz98CI3iQLi-IX/exec?civilId=" + civilId;
+            const apiUrl = "https://script.google.com/macros/s/AKfycbzc-632fW2wgF_1q3YniucIQpO-fREDw-SyV6Yi24RtByBd-nnJVsuU9PIUjAUsvy1I/exec?civilId=" + civilId;
 
             try {
                 const response = await fetch(apiUrl);
@@ -135,14 +233,24 @@
                         <h3 style="color: #27ae60;">✅ نتيجة البحث</h3>
                         <p><strong>👤 الاسم:</strong> ${student.name}</p>
                         <p><strong>📚 الصف:</strong> ${student.grade}</p>
+                        <p><strong>📊 المجموع:</strong> ${student.total}</p>
+                        <p><strong>📈 النسبة المئوية:</strong> ${student.percentage}%</p>
+                        <p><strong>🏆 الترتيب:</strong> ${student.rank}</p>
                         <p><strong>📜 الشهادة:</strong> <a href="${student.certificateLink}" target="_blank" style="color: #2980b9; text-decoration: none;">🎓 عرض الشهادة</a></p>
                     `;
+                    resultDiv.classList.add('result-animation');
+                    playSuccessSound();
                 } else {
                     resultDiv.innerHTML = '<p style="color:red;">❌ لم يتم العثور على شهادة لهذا الرقم المدني.</p>';
                 }
             } catch (error) {
                 resultDiv.innerHTML = '<p style="color:red;">⚠️ حدث خطأ أثناء جلب البيانات.</p>';
             }
+        }
+
+        function playSuccessSound() {
+            const audio = new Audio('https://www.soundjay.com/human/applause-01.mp3');
+            audio.play();
         }
     </script>
 </head>
@@ -152,7 +260,7 @@
         <h2>بوابة استعلام الشهادات لنتائج الفصل الدراسي الأول للعام الدراسي 2024 / 2025 م</h2>
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     </div>
-    <div class="marquee"><span>🎉 تهانينا للطلبة المتفوقين، أنتم فخر المستقبل! 🎓 | 🌟 تهنئة مدير المدرسة: سررت بالنتائج الرائعة لأبنائي الطلبة .. وفقكم ربي للخير والصلاح 🌟</span></div>
+    <div class="marquee"><span>🎉 تهانينا للطلبة المتفوقين، أنتم فخر المدرسة! 🎓 | 🌟 تهنئة مدير المدرسة: سررت بالنتائج الرائعة لأبنائي الطلبة .. وفقكم ربي للخير والصلاح 🌟</span></div>
     <div class="container">
         <label for="civilId" style="font-size: 1.3rem; font-weight: bold; color: #2c3e50; display: block; margin-bottom: 10px;">🔍 أدخل الرقم المدني للطالب:</label>
         <input type="text" id="civilId" placeholder="مثال: 12345678">
@@ -161,7 +269,7 @@
     </div>
     <div class="footer">
         &copy; 2024 - 2025 مدرسة محمد بن سليمان الغافري. جميع الحقوق محفوظة. <br>
-        تم إعداد هذه البوابة بواسطة مدرسة محمد بن سليمان الغافري 2025
+        مدرسة محمد بن سليمان الغافري منارة العابرين .. ونور السالكين
     </div>
 </body>
 </html>
